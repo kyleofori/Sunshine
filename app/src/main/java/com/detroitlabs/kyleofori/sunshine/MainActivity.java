@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -76,7 +78,11 @@ public class MainActivity extends ActionBarActivity {
                     R.layout.list_item_forecast,
                     R.id.list_item_forecast_textview,
                     weatherStrings);
-            
+
+            ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast); //finding that rootView was tough.
+            listView.setAdapter(mForecastAdapter);
+
+
             return rootView;
         }
     }
