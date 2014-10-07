@@ -4,5 +4,9 @@
     <string name="app_name">Sunshine</string>
     <string name="hello_world">Hello world! It\'s sunny and 75 degrees out.</string>
     <string name="action_settings">Settings</string>
+    <string name="greengables">Sunny, 95º, drought conditions</string>
+
+    <string name="weather_107">Today - cloudy, 44 / 32</string>
+    <string name="weather_108">Tomorrow - sunny, 55 / 44</string>
 
 </resources>
