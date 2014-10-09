@@ -29,12 +29,40 @@ public class ForecastFragment extends Fragment {
     public ForecastFragment () {
     } //should something be in this?
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.forecastfragment, menu); //gMI's parameters are the menu xml and the menu passed in..
+    }
+
+
+    public boolean onOptionItemsSelected(MenuItem item) {
+//        int id = item.getItemId();
+//        if(id == R.id.refresh) {
+//            return true;
+//        }
+
+        //I found the method below in the docs.
+        switch (item.getItemId()) {
+            case R.id.refresh:
+                new FetchWeatherTask().execute();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-
 
         ArrayList<String> weatherStrings = new ArrayList<String>();
         String weather109 = "Thu - sunny, 56 / 43";
@@ -58,19 +86,6 @@ public class ForecastFragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getActivity().getMenuInflater(); //Whereis this getMenuInflater method??
-        inflater.inflate(R.menu.forecastfragment, menu); //gMI's parameters are the menu xml and the menu passed in..
-        return true;
-    }
-
-
-    @Override
-    public boolean onOptionItemsSelected(MenuItem item) {
-        super.onOptionsItemSelected(item);
-        return true;
-    }
 
     public class FetchWeatherTask extends AsyncTask<Void, Void, Void> {
 

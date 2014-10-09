@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
-    android:id="@+id/list_item_forecast_textview"
-    android:text="@string/greengables">
+    android:id="@+id/list_item_forecast_textview">
 
 </TextView>
