@@ -44,19 +44,20 @@ public class ForecastFragment extends Fragment {
 
 
     public boolean onOptionItemsSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        if(id == R.id.refresh) {
-//            return true;
-//        }
+        int id = item.getItemId();
+        if(id == R.id.refresh) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
 
         //I found the method below in the docs.
-        switch (item.getItemId()) {
-            case R.id.refresh:
-                new FetchWeatherTask().execute();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+//        switch (item.getItemId()) {
+//            case R.id.refresh:
+//                new FetchWeatherTask().execute();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
     }
 
     @Override
@@ -94,7 +95,7 @@ public class ForecastFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
             // These two need to be declared outside the try/catch
-// so that they can be closed in the finally block.
+            // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
