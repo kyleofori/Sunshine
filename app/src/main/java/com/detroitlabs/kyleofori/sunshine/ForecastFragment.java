@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -24,12 +27,14 @@ import java.util.ArrayList;
 public class ForecastFragment extends Fragment {
 
     public ForecastFragment () {
-    }
+    } //should something be in this?
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+
 
         ArrayList<String> weatherStrings = new ArrayList<String>();
         String weather109 = "Thu - sunny, 56 / 43";
@@ -48,7 +53,23 @@ public class ForecastFragment extends Fragment {
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast); //finding that rootView was tough.
         listView.setAdapter(mForecastAdapter);
 
+
+
         return rootView;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getActivity().getMenuInflater(); //Whereis this getMenuInflater method??
+        inflater.inflate(R.menu.forecastfragment, menu); //gMI's parameters are the menu xml and the menu passed in..
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionItemsSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        return true;
     }
 
     public class FetchWeatherTask extends AsyncTask<Void, Void, Void> {
