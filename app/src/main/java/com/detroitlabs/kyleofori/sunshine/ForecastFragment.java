@@ -255,7 +255,17 @@ public class ForecastFragment extends Fragment {
                 }
                 forecastJsonStr = buffer.toString();
 
-                Log.v(LOG_TAG, "forecast Json string: "+forecastJsonStr);
+                String[] gWDFJ = null;
+                try {
+                    gWDFJ = getWeatherDataFromJson(forecastJsonStr, 7);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Log.v(LOG_TAG, "forecast Json string: " + forecastJsonStr);
+                for (int ant = 0; ant < gWDFJ.length; ant++) {
+                Log.v(LOG_TAG, gWDFJ[ant]);
+                }
 
 
             } catch (IOException e) {
