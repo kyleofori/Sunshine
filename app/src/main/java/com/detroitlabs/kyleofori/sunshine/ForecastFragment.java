@@ -1,5 +1,6 @@
 package com.detroitlabs.kyleofori.sunshine;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Created by kyleofori on 10/8/14.
@@ -42,10 +44,12 @@ public class ForecastFragment extends Fragment {
         inflater.inflate(R.menu.forecastfragment, menu); //gMI's parameters are the menu xml and the menu passed in..
     }
 
-
-    public boolean onOptionItemsSelected(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.refresh) {
+            FetchWeatherTask weatherTask = new FetchWeatherTask();
+            weatherTask.execute("Detroit");
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -53,7 +57,6 @@ public class ForecastFragment extends Fragment {
         //I found the method below in the docs.
 //        switch (item.getItemId()) {
 //            case R.id.refresh:
-//                new FetchWeatherTask().execute();
 //                return true;
 //            default:
 //                return super.onOptionsItemSelected(item);
@@ -88,25 +91,58 @@ public class ForecastFragment extends Fragment {
     }
 
 
-    public class FetchWeatherTask extends AsyncTask<Void, Void, Void> {
+    public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
-        private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
+        private final String LOG_TAG = FetchWeatherTask.class.getSimpleName(); //needs to match name of class
+//        Scanner myScanner = new Scanner(System.in);   NOT THE ONE
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground(String... postcode) {
+            if (postcode.length == 0) {
+                return null;
+            }
+
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
-// Will contain the raw JSON response as a string.
+            // Will contain the raw JSON response as a string.
             String forecastJsonStr = null;
 
             try {
                 // Construct the URL for the OpenWeatherMap query
                 // Possible parameters are avaiable at OWM's forecast API page, at
                 // http://openweathermap.org/API#forecast
-                URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=Detroit&mode=json&units=metric&cnt=7");
+
+                //I THINK THE URIBUILDER WILL GO HERE.
+
+                //After talking to Bryan Kelly
+//                Uri.Builder myUriBuilder = new Uri.Builder();
+//                myUriBuilder.appendPath("?q=Detroit");
+//                myUriBuilder.appendPath("&mode=json");
+//                myUriBuilder.appendPath("&units=metric");
+//                myUriBuilder.appendPath("&cnt=7");
+//                myUriBuilder.build();
+
+                //after checking StackOverflow
+                Uri.Builder builder = new Uri.Builder();
+                builder.scheme("http").authority("api.openweathermap.org")
+                        .appendPath("data")
+                        .appendPath("2.5")
+                        .appendPath("forecast")
+                        .appendPath("daily")
+                        .appendQueryParameter("q", postcode[0])
+                        .appendQueryParameter("mode", "json")
+                        .appendQueryParameter("units", "metric")
+                        .appendQueryParameter("cnt", "7");
+
+                String myUrl = builder.build().toString();
+
+                Log.v(LOG_TAG, myUrl);
+
+                URL url = new URL(myUrl);
+//                URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=Detroit&mode=json&units=metric&cnt=7");
 
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -135,6 +171,10 @@ public class ForecastFragment extends Fragment {
                     return null;
                 }
                 forecastJsonStr = buffer.toString();
+
+                Log.v(LOG_TAG, "forecast Json string: "+forecastJsonStr);
+
+
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attempting

@@ -8,5 +8,7 @@
 
     <string name="weather_107">Today - cloudy, 44 / 32</string>
     <string name="weather_108">Tomorrow - sunny, 55 / 44</string>
+    <string name="permlab_internet">Internet Permission Required</string>
+    <string name="permdesc_internet">You must connect to the internet to run this process.</string>
 
 </resources>
