@@ -27,12 +27,13 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Scanner;
 
 /**
  * Created by kyleofori on 10/8/14.
  */
 public class ForecastFragment extends Fragment {
+
+    private ArrayAdapter<String> mForecastAdapter;
 
     public ForecastFragment () {
     } //should something be in this?
@@ -82,7 +83,7 @@ public class ForecastFragment extends Fragment {
         weatherStrings.add(weather109);
         weatherStrings.add(weather110);
 
-        ArrayAdapter<String> mForecastAdapter = new ArrayAdapter<String>(
+        mForecastAdapter = new ArrayAdapter<String>(
                 getActivity(),
                 R.layout.list_item_forecast,
                 R.id.list_item_forecast_textview,
@@ -97,13 +98,27 @@ public class ForecastFragment extends Fragment {
     }
 
 
-    public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
+    public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName(); //needs to match name of class
 
+        public FetchWeatherTask() {
+            super();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String[] strings) {
+            super.onPostExecute(strings);
+        }
+
         /* The date/time conversion code is going to be moved outside the asynctask later,
- * so for convenience we're breaking it out into its own method now.
- */
+         * so for convenience we're breaking it out into its own method now.
+         */
         private String getReadableDateString(long time){
             // Because the API returns a unix timestamp (measured in seconds),
             // it must be converted to milliseconds in order to be converted to valid date.
@@ -180,7 +195,7 @@ public class ForecastFragment extends Fragment {
         }
 
         @Override
-        protected Void doInBackground(String... postcode) {
+        protected String[] doInBackground(String... postcode) {
             if (postcode.length == 0) {
                 return null;
             }
@@ -189,6 +204,8 @@ public class ForecastFragment extends Fragment {
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
+            String[] gWDFJ = null;
+
 
             // Will contain the raw JSON response as a string.
             String forecastJsonStr = null;
@@ -255,7 +272,6 @@ public class ForecastFragment extends Fragment {
                 }
                 forecastJsonStr = buffer.toString();
 
-                String[] gWDFJ = null;
                 try {
                     gWDFJ = getWeatherDataFromJson(forecastJsonStr, 7);
                 } catch (JSONException e) {
@@ -263,9 +279,15 @@ public class ForecastFragment extends Fragment {
                 }
 
                 Log.v(LOG_TAG, "forecast Json string: " + forecastJsonStr);
+
+                ArrayList<String> newWeatherStrings = new ArrayList<String>();
+
                 for (int ant = 0; ant < gWDFJ.length; ant++) {
-                Log.v(LOG_TAG, gWDFJ[ant]);
+                    newWeatherStrings.add(gWDFJ[ant]);
+                    Log.v(LOG_TAG, gWDFJ[ant]);
                 }
+
+
 
 
             } catch (IOException e) {
@@ -286,7 +308,7 @@ public class ForecastFragment extends Fragment {
                 }
             }
 
-            return null;
+            return gWDFJ;
         }
 
     }
