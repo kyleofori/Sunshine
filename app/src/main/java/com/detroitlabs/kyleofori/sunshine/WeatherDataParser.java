@@ -15,18 +15,16 @@ public class WeatherDataParser {
      * retrieve the maximum temperature for the day indicated by dayIndex
      * (Note: 0-indexed, so 0 would refer to the first day).
      */
+
     public static double getMaxTemperatureForDay(String weatherJsonStr, int dayIndex)
             throws JSONException {
-        try {
-            JSONObject jObj = new JSONObject(weatherJsonStr);
-            JSONArray jArr = jObj.getJSONArray("list");
-            JSONObject jListItem = jArr.getJSONObject(dayIndex);
-            double jMaxTemp = jListItem.getDouble("max");
-            return jMaxTemp;
-        }
-        catch (JSONException e) {
-            return -1;
-        }
+
+        JSONObject jObj = new JSONObject(weatherJsonStr);
+        JSONArray jArr = jObj.getJSONArray("list");
+        JSONObject JSONListItem = jArr.getJSONObject(dayIndex);
+        JSONObject jTemp = JSONListItem.getJSONObject("temp");
+        double jMax = jTemp.getDouble("max");
+        return jMax;
     }
 
 }
