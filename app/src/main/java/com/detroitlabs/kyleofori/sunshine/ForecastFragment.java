@@ -1,7 +1,9 @@
 package com.detroitlabs.kyleofori.sunshine;
 
+import android.annotation.TargetApi;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -35,16 +37,16 @@ public class ForecastFragment extends Fragment {
 
     private ArrayAdapter<String> mForecastAdapter;
 
-    public ForecastFragment () {
-    } //should something be in this?
+    private ListView mListView;
 
+    public ForecastFragment () {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -83,14 +85,24 @@ public class ForecastFragment extends Fragment {
         weatherStrings.add(weather109);
         weatherStrings.add(weather110);
 
-        mForecastAdapter = new ArrayAdapter<String>(
-                getActivity(),
-                R.layout.list_item_forecast,
-                R.id.list_item_forecast_textview,
-                weatherStrings);
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast); //finding that rootView was tough.
-        listView.setAdapter(mForecastAdapter);
+//        if(newWeatherStrings.isEmpty()) {
+            mForecastAdapter = new ArrayAdapter<String>(
+                    getActivity(),
+                    R.layout.list_item_forecast, //What View will be inflated for that element in array
+                    R.id.list_item_forecast_textview, //which View within the layout does the element of the array bind to
+                    weatherStrings);
+//        }
+//        else
+//        {
+//            mForecastAdapter = new ArrayAdapter<String>(
+//                    getActivity(),
+//                    R.layout.list_item_forecast,
+//                    R.id.list_item_forecast_textview,
+//                    newWeatherStrings);
+//        }
+        mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
+        mListView.setAdapter(mForecastAdapter);
 
 
 
@@ -111,9 +123,12 @@ public class ForecastFragment extends Fragment {
             super.onPreExecute();
         }
 
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         @Override
         protected void onPostExecute(String[] strings) {
             super.onPostExecute(strings);
+            mForecastAdapter.clear();
+            mForecastAdapter.addAll(strings);
         }
 
         /* The date/time conversion code is going to be moved outside the asynctask later,
@@ -239,8 +254,6 @@ public class ForecastFragment extends Fragment {
 
                 String myUrl = builder.build().toString();
 
-                Log.v(LOG_TAG, myUrl);
-
                 URL url = new URL(myUrl);
 //                URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=Detroit&mode=json&units=metric&cnt=7");
 
@@ -272,25 +285,14 @@ public class ForecastFragment extends Fragment {
                 }
                 forecastJsonStr = buffer.toString();
 
-                try {
-                    gWDFJ = getWeatherDataFromJson(forecastJsonStr, 7);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                gWDFJ = getWeatherDataFromJson(forecastJsonStr, 7);
 
-                Log.v(LOG_TAG, "forecast Json string: " + forecastJsonStr);
-
-                ArrayList<String> newWeatherStrings = new ArrayList<String>();
-
-                for (int ant = 0; ant < gWDFJ.length; ant++) {
-                    newWeatherStrings.add(gWDFJ[ant]);
-                    Log.v(LOG_TAG, gWDFJ[ant]);
-                }
-
-
-
-
-            } catch (IOException e) {
+            }
+            catch (JSONException e){
+                e.printStackTrace();
+            }
+            catch (IOException e)
+            {
                 Log.e(LOG_TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attempting
                 // to parse it.
@@ -308,7 +310,7 @@ public class ForecastFragment extends Fragment {
                 }
             }
 
-            return gWDFJ;
+            return gWDFJ; //onPostExecute() knows what I will return from this.
         }
 
     }
