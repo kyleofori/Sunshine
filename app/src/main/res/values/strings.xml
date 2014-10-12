@@ -5,10 +5,10 @@
     <string name="hello_world">Hello world! It\'s sunny and 75 degrees out.</string>
     <string name="action_settings">Settings</string>
     <string name="refresh">Refresh</string>
-
     <string name="weather_107">Today - cloudy, 44 / 32</string>
     <string name="weather_108">Tomorrow - sunny, 55 / 44</string>
     <string name="permlab_internet">Internet Permission Required</string>
     <string name="permdesc_internet">You must connect to the internet to run this process.</string>
+    <string name="title_activity_detail">DetailActivity</string>
 
 </resources>

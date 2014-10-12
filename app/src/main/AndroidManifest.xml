@@ -2,9 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.detroitlabs.kyleofori.sunshine" >
 
-    <uses-permission android:name="android.permission.INTERNET"
-        android:label="@string/permlab_internet"
+    <uses-permission
+        android:name="android.permission.INTERNET"
         android:description="@string/permdesc_internet"
+        android:label="@string/permlab_internet"
         android:permissionGroup="android.permission-group.NETWORK" />
 
     <application
@@ -20,6 +21,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".DetailActivity"
+            android:label="@string/title_activity_detail"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.detroitlabs.kyleofori.sunshine.MainActivity" />
         </activity>
     </application>
 
