@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -116,25 +117,28 @@ public class ForecastFragment extends Fragment {
 
 //                //even though there's no long here, we have to implement the whole method since
 //                //onItemClick is an interface.
-//                Context context = getActivity();
+//       !!!         Context context = getActivity();
 //                //Contexts are mostly used to load and access resources.
 //
 //                //Use getActivity() to get the context when you're
 //                //in a class that extends Activity (like this one! ForecastFragment extends Fragment,
 //                //which doesn't actually extend Activity but is closely associated with Activity...)
 //                //CONTEXTS ARE USUALLY EITHER AN ACTIVITY OR AN APPLICATION.
-//                CharSequence text = mForecastAdapter.getItem(i);  //mForecastAdapter is an instance
+//       !!!         CharSequence text = mForecastAdapter.getItem(i);  //mForecastAdapter is an instance
 //                //of an AdapterView. AdapterViews are Views, meaning they fill they screen with
 //                //something(s) the user sees. As a View, it can contain other Views. We are making
 //                //those sub-Views clickable, to display a toast. To figure out what text should be
 //                //shown in the toast, we use the "getItem()" method.
 //                int duration = Toast.LENGTH_SHORT;
 //
-//                Toast toast = Toast.makeText(context, text, duration);
-//                toast.show();
+//       !!!         Toast toast = Toast.makeText(context, text, duration);
+//       !!!         toast.show();
 
 
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
+                String message = mForecastAdapter.getItem(i).toString();
+                intent.putExtra(EXTRA_LAUNCH, message);
+                startActivity(intent);
             }
         }); //So all this is REALLY just part of the parameters of setOnItemClickListener.
 
