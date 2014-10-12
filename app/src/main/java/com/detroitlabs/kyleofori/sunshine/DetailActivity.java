@@ -1,5 +1,6 @@
 package com.detroitlabs.kyleofori.sunshine;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
-
+import android.widget.TextView;
 
 
 public class DetailActivity extends ActionBarActivity {
@@ -24,6 +25,15 @@ public class DetailActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+
+        Intent intent = getIntent();
+        String message = intent.getStringExtra(ForecastFragment.EXTRA_MESSAGE);
+
+        TextView textView = new TextView(this); //The parameter for a TextView is Context.
+        textView.setText(message);
+
+        setContentView(textView); //to get the message on the screen.
+
     }
 
 

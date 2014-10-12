@@ -41,6 +41,8 @@ import java.util.Date;
  */
 public class ForecastFragment extends Fragment {
 
+    public static final String EXTRA_MESSAGE = "com.detroitlabs.kyleofori.sunshine.MESSAGE";
+
     private ArrayAdapter<String> mForecastAdapter;
 
     private ListView mListView;
@@ -136,8 +138,8 @@ public class ForecastFragment extends Fragment {
 
 
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
-                String message = mForecastAdapter.getItem(i).toString();
-                intent.putExtra(EXTRA_LAUNCH, message);
+                String message = mForecastAdapter.getItem(i);
+                intent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(intent);
             }
         }); //So all this is REALLY just part of the parameters of setOnItemClickListener.
