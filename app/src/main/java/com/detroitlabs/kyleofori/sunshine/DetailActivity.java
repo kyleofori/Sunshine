@@ -25,15 +25,6 @@ public class DetailActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
-
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(ForecastFragment.EXTRA_MESSAGE);
-
-        TextView textView = new TextView(this); //The parameter for a TextView is Context.
-        textView.setText(message);
-
-        setContentView(textView); //to get the message on the screen.
-
     }
 
 
@@ -67,7 +58,24 @@ public class DetailActivity extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
+
+            Intent intent = getActivity().getIntent();
+
+            //BELOW IS WHAT I TRIED FIRST. I later learned that it'd be better to name the view that
+            //already exists in fragment_detail.xml and change the text from DetailActivity.class than
+            //to try and make a whole new TextView.
+            //The aforementioned view has now been named detail_text.
+//        TextView textView = new TextView(this); //The parameter for a TextView is Context.
+//        textView.setText(message);
+//        setContentView(textView); //to get the message on the screen.
+
+
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+            if(intent != null && intent.hasExtra(ForecastFragment.EXTRA_MESSAGE)) {
+                String message = intent.getStringExtra(ForecastFragment.EXTRA_MESSAGE);
+                TextView textView = (TextView) rootView.findViewById(R.id.detail_text);
+                textView.setText(message);
+            }
             return rootView;
         }
     }
