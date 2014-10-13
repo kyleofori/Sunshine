@@ -19,6 +19,12 @@ import android.view.KeyEvent;
 public class SettingsActivity extends PreferenceActivity
         implements Preference.OnPreferenceChangeListener {
 
+    public static final String TEMP_LABEL = "Temperature";
+    public static final String TEMP_KEY = "temperature";
+    public static final String TEMP_DEFAULT = "metric";
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

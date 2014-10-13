@@ -87,23 +87,12 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-
-//        if(newWeatherStrings.isEmpty()) {
-
             mForecastAdapter = new ArrayAdapter<String>(
                     getActivity(),
                     R.layout.list_item_forecast, //What View will be inflated for that element in array
                     R.id.list_item_forecast_textview, //which View within the layout does the element of the array bind to
                     new ArrayList<String>());
-//        }
-//        else
-//        {
-//            mForecastAdapter = new ArrayAdapter<String>(
-//                    getActivity(),
-//                    R.layout.list_item_forecast,
-//                    R.id.list_item_forecast_textview,
-//                    newWeatherStrings);
-//        }
+
         mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
         mListView.setAdapter(mForecastAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
