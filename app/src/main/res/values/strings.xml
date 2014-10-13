@@ -14,5 +14,8 @@
     <string name="pref_location_label">Location</string>
     <!--Key name for storing location in Shared Preferences [CHAR LIMIT=NONE]-->
     <string name="pref_location_default" translatable="false">48214</string>
+    <string name="pref_temp_label">Temperature</string>
+    <!--Key name for storing location in Shared Preferences [CHAR LIMIT=NONE]-->
+    <string name="pref_temp_default" translatable="false">metric</string>
 
 </resources>
