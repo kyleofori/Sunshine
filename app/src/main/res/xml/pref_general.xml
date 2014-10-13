@@ -16,6 +16,6 @@
         android:title="@string/pref_temp_label"
         android:key="temperature"
         android:defaultValue="@string/pref_temp_default"
-
+        android:entryValues="@string/metric"
         />
 </PreferenceScreen>
