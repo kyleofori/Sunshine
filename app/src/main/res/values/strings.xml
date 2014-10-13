@@ -19,5 +19,6 @@
     <string name="pref_temp_default" translatable="false">@string/metric</string>
     <string name="metric">Metric</string>
     <string name="imperial">Imperial</string>
+    <string name="action_see_preferred_location">View Preferred Location</string>
 
 </resources>
