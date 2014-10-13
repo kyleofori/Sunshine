@@ -1,6 +1,7 @@
 package com.detroitlabs.kyleofori.sunshine;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.StringRes;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -58,6 +59,15 @@ public class MainActivity extends ActionBarActivity {
             Intent i = new Intent(this, SettingsActivity.class);
             startActivity(i);
             return true;
+        }
+        if(id == R.id.action_see_preferred_location) {
+            public void showMap(Uri geoLocation) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(geoLocation);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+            }
         }
         return super.onOptionsItemSelected(item);
     }
