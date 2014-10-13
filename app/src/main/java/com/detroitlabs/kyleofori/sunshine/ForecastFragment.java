@@ -89,7 +89,7 @@ public class ForecastFragment extends Fragment {
 
 
 //        if(newWeatherStrings.isEmpty()) {
-        
+
             mForecastAdapter = new ArrayAdapter<String>(
                     getActivity(),
                     R.layout.list_item_forecast, //What View will be inflated for that element in array
