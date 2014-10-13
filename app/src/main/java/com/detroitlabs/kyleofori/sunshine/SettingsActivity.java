@@ -8,7 +8,6 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 
-
 /**
  * A {@link PreferenceActivity} that presents a set of application settings.
  * <p>
