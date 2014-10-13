@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -215,6 +216,12 @@ public class ForecastFragment extends Fragment {
          * Fortunately parsing is easy:  constructor takes the JSON string and converts it
          * into an Object hierarchy for us.
          */
+
+        public double convertToFahrenheit(double temperature) {
+            temperature = 1.8*temperature + 32;
+            return temperature;
+        }
+
         private String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
                 throws JSONException {
 
@@ -255,6 +262,17 @@ public class ForecastFragment extends Fragment {
                 JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
                 double high = temperatureObject.getDouble(OWM_MAX);
                 double low = temperatureObject.getDouble(OWM_MIN);
+
+                // KO - I'd like a check for the setting that we're on, which would multiply
+                // the Celsius temperature by 1.8 and add 32 if the mode were imperial.
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+                boolean isImperial = prefs.getString("temperature",     //prefs.getString() has 2 parameters
+                        getString(R.string.pref_temp_label)).equals("Imperial");
+                if(isImperial) {
+                    high = convertToFahrenheit(high);
+                    low = convertToFahrenheit(low);
+                }
 
                 highAndLow = formatHighLows(high, low);
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
