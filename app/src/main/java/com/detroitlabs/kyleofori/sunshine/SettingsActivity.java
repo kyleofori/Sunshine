@@ -24,7 +24,6 @@ public class SettingsActivity extends PreferenceActivity
     public static final String TEMP_DEFAULT = "metric";
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

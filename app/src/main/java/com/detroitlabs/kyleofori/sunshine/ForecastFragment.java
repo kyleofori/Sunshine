@@ -148,7 +148,7 @@ public class ForecastFragment extends Fragment {
 //            weatherTask.execute(prefs.getString("location", "48214"));  //With help from B. Zabor
 
 //Finally, redone after looking at the answer.
-        weatherTask.execute(prefs.getString(getString(R.string.pref_location_key),
+        weatherTask.execute(prefs.getString("location",
                 getString(R.string.pref_location_default)));
 
         //The answer suggests:
