@@ -112,30 +112,13 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        ArrayList<String> weatherStrings = new ArrayList<String>();
-        String weather109 = "Thu - sunny, 56 / 43";
-        String weather110 = "Fri - sunny, 96 / 22";
-        weatherStrings.add(getString(R.string.weather_107)); //You have to getString() for string resources
-        weatherStrings.add(getString(R.string.weather_108));
-        weatherStrings.add(weather109);
-        weatherStrings.add(weather110);
-
-
-//        if(newWeatherStrings.isEmpty()) {
             mForecastAdapter = new ArrayAdapter<String>(
                     getActivity(),
                     R.layout.list_item_forecast, //What View will be inflated for that element in array
                     R.id.list_item_forecast_textview, //which View within the layout does the element of the array bind to
-                    weatherStrings);
-//        }
-//        else
-//        {
-//            mForecastAdapter = new ArrayAdapter<String>(
-//                    getActivity(),
-//                    R.layout.list_item_forecast,
-//                    R.id.list_item_forecast_textview,
-//                    newWeatherStrings);
-//        }
+                    new ArrayList<String>());
+
+
         mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
         mListView.setAdapter(mForecastAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
