@@ -58,7 +58,7 @@ public class ForecastFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.forecastfragment, menu); //gMI's parameters are the menu xml and the menu passed in.
+        inflater.inflate(R.menu.forecastfragment, menu); //gMI's parameters are the menu pref_general and the menu passed in.
     }
 
     @Override

@@ -39,7 +39,7 @@ public class DetailActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // as you specify a parent activity in AndroidManifest.pref_general.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             Intent i = new Intent(this, SettingsActivity.class);
@@ -64,7 +64,7 @@ public class DetailActivity extends ActionBarActivity {
             Intent intent = getActivity().getIntent();
 
             //BELOW IS WHAT I TRIED FIRST. I later learned that it'd be better to name the view that
-            //already exists in fragment_detail.xml and change the text from DetailActivity.class than
+            //already exists in fragment_detail.pref_general and change the text from DetailActivity.class than
             //to try and make a whole new TextView.
             //The aforementioned view has now been named detail_text.
 //        TextView textView = new TextView(this); //The parameter for a TextView is Context.
