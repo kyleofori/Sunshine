@@ -1,5 +1,6 @@
 package com.detroitlabs.kyleofori.sunshine;
 
+import android.content.Intent;
 import android.support.annotation.StringRes;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -54,7 +55,8 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            return true;
+            Intent i = new Intent(this, SettingsActivity.class);
+            startActivity(i);
         }
         return super.onOptionsItemSelected(item);
     }
