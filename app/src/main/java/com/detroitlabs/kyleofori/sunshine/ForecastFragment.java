@@ -68,27 +68,7 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.refresh) {
-            FetchWeatherTask weatherTask = new FetchWeatherTask();
-            //Changing the following from weatherTask.execute("Detroit") because I want
-            //the local preferences to be found.
-            //When I need a context, if I'm in a Fragment, apparently I must use getActivity().
-//ATTEMPT 1            String name = getString(R.xml.pref_general);
-//ATTEMPT 2            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-/*ATTEMPT 3*/          SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-//            prefs.getString(R.xml.pr)
-///*ATTEMPT 4*/                     getActivity().getSharedPreferences(prefs, Context.MODE_PRIVATE);
-//            weatherTask.execute(prefs.getString("location", "48214"));  //With help from B. Zabor
-
-//Finally, redone after looking at the answer.
-            weatherTask.execute(prefs.getString(getString(R.string.pref_location_key),
-                    getString(R.string.pref_location_default)));
-
-            //The answer suggests:
-//            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-//            String location = prefs.getString(getString(R.string.pref_location_key),
-//                    getString(R.string.pref_location_default));
-//            weatherTask.execute(location);
+            updateWeather();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -100,6 +80,31 @@ public class ForecastFragment extends Fragment {
 //            default:
 //                return super.onOptionsItemSelected(item);
 //        }
+    }
+
+    private void updateWeather() {
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+        //Changing the following from weatherTask.execute("Detroit") because I want
+        //the local preferences to be found.
+        //When I need a context, if I'm in a Fragment, apparently I must use getActivity().
+//ATTEMPT 1            String name = getString(R.xml.pref_general);
+//ATTEMPT 2            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+/*ATTEMPT 3*/
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+//            prefs.getString(R.xml.pr)
+///*ATTEMPT 4*/                     getActivity().getSharedPreferences(prefs, Context.MODE_PRIVATE);
+//            weatherTask.execute(prefs.getString("location", "48214"));  //With help from B. Zabor
+
+//Finally, redone after looking at the answer.
+        weatherTask.execute(prefs.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default)));
+
+        //The answer suggests:
+//            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+//            String location = prefs.getString(getString(R.string.pref_location_key),
+//                    getString(R.string.pref_location_default));
+//            weatherTask.execute(location);
     }
 
     @Override
@@ -172,6 +177,12 @@ public class ForecastFragment extends Fragment {
         return rootView;
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateWeather();
+    }
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
