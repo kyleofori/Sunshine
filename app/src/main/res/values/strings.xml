@@ -10,5 +10,6 @@
     <string name="permlab_internet">Internet Permission Required</string>
     <string name="permdesc_internet">You must connect to the internet to run this process.</string>
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
 
 </resources>
