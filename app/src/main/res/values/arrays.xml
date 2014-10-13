@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="list_entries"
+    <string-array name="temp_units_entries">
+        <item>Metric entry</item>
+        <item>Imperial entry</item>
+    </string-array>
+
+    <string-array name="temp_units_values">
+        <item>@string/metric</item>
+        <item>@string/imperial</item>
+    </string-array>
 </resources>
