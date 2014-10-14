@@ -43,7 +43,7 @@ public class DetailActivity extends ActionBarActivity {
     }
 
 
-    private String getLatAndLonFromJson (String latAndLonStr)
+    private String getLatAndLonFromJson(String latAndLonStr)
             throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
@@ -67,6 +67,14 @@ public class DetailActivity extends ActionBarActivity {
     }
 
 
+    private void showMap(Uri geoLocation) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -80,27 +88,25 @@ public class DetailActivity extends ActionBarActivity {
         }
         if (id == R.id.action_see_preferred_location) {
 
+            try {
 
+                String latAndLonStr = null;
 
-            Uri.Builder builder = new Uri.Builder();
-            builder.scheme("geo").authority("0,0")
-                    .appendQueryParameter("q", "lat,lng"+"(Preferred Location")
+                Uri.Builder builder = new Uri.Builder();
+                builder.scheme("geo").authority("0,0")
+                        .appendQueryParameter("q", getLatAndLonFromJson(latAndLonStr) + "(Preferred Location")
 
 //            String myUrl = builder.build().toString();
-            Uri geoLocation = builder.build();
-
-            "geo:0,0?q=lat,lng(Preferred Location)";
+                Uri geoLocation = builder.build();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+            //    "geo:0,0?q=lat,lng(Preferred Location)";
 
 
             //Should I now make strings for geoLocation?
-            public void showMap(Uri geoLocation) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(geoLocation);
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                }
-            }
-        }
+
         return super.onOptionsItemSelected(item);
     }
 
