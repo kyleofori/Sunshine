@@ -48,6 +48,8 @@ public class DetailActivity extends ActionBarActivity {
             return true;
         }
         if (id == R.id.action_see_preferred_location) {
+
+            //Should I now make strings for geoLocation?
             public void showMap(Uri geoLocation) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(geoLocation);
