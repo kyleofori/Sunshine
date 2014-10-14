@@ -7,6 +7,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by kyleofori on 10/14/14.
  */
@@ -22,9 +25,23 @@ public class AsyncTaskClass {
         final String OWM_MIN = "min";
         final String OWM_DATETIME = "dt";
         final String OWM_DESCRIPTION = "main";
+        final String OWM_LAT = "lat";
+        final String OWM_LON = "lon";
+        final String OWM_COORD = "coord";
+        String zoomLevel = "13z";
 
         JSONObject forecastJson = new JSONObject(forecastJsonStr); //this one is not in the JSON data.
         JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST); //this is found in the list object of the JSON data.
+
+        JSONObject coordinates = forecastJson.getJSONObject(OWM_COORD);
+        //These JSON objects are the pairs latitude: ~~~~ and longitude: ~~~~~.
+        JSONObject jsonLatitude = coordinates.getJSONObject(OWM_LAT);
+        JSONObject jsonLongitude = coordinates.getJSONObject(OWM_LON);
+        //The following will give us those numbers that we need.
+        String latitude = jsonLatitude.getString(OWM_LAT);
+        String longitude = jsonLongitude.getString(OWM_LON);
+
+        String resultString = latitude + "," + longitude + "," + zoomLevel;
 
         String[] resultStrs = new String[numDays];
         for (int i = 0; i < weatherArray.length(); i++) {
@@ -68,5 +85,38 @@ public class AsyncTaskClass {
         }
 
         return resultStrs;
+    }
+
+    private String getReadableDateString(long time){
+        // Because the API returns a unix timestamp (measured in seconds),
+        // it must be converted to milliseconds in order to be converted to valid date.
+        Date date = new Date(time * 1000);
+        SimpleDateFormat format = new SimpleDateFormat("E, MMM d");
+        return format.format(date).toString();
+    }
+
+    /**
+     * Prepare the weather high/lows for presentation.
+     */
+    private String formatHighLows(double high, double low) {
+        // For presentation, assume the user doesn't care about tenths of a degree.
+        long roundedHigh = Math.round(high);
+        long roundedLow = Math.round(low);
+
+        String highLowStr = roundedHigh + "/" + roundedLow;
+        return highLowStr;
+    }
+
+    /**
+     * Take the String representing the complete forecast in JSON Format and
+     * pull out the data we need to construct the Strings needed for the wireframes.
+     *
+     * Fortunately parsing is easy:  constructor takes the JSON string and converts it
+     * into an Object hierarchy for us.
+     */
+
+    public double convertToFahrenheit(double temperature) {
+        temperature = 1.8*temperature + 32;
+        return temperature;
     }
 }

@@ -189,38 +189,7 @@ public class ForecastFragment extends Fragment {
         /* The date/time conversion code is going to be moved outside the asynctask later,
          * so for convenience we're breaking it out into its own method now.
          */
-        private String getReadableDateString(long time){
-            // Because the API returns a unix timestamp (measured in seconds),
-            // it must be converted to milliseconds in order to be converted to valid date.
-            Date date = new Date(time * 1000);
-            SimpleDateFormat format = new SimpleDateFormat("E, MMM d");
-            return format.format(date).toString();
-        }
 
-        /**
-         * Prepare the weather high/lows for presentation.
-         */
-        private String formatHighLows(double high, double low) {
-            // For presentation, assume the user doesn't care about tenths of a degree.
-            long roundedHigh = Math.round(high);
-            long roundedLow = Math.round(low);
-
-            String highLowStr = roundedHigh + "/" + roundedLow;
-            return highLowStr;
-        }
-
-        /**
-         * Take the String representing the complete forecast in JSON Format and
-         * pull out the data we need to construct the Strings needed for the wireframes.
-         *
-         * Fortunately parsing is easy:  constructor takes the JSON string and converts it
-         * into an Object hierarchy for us.
-         */
-
-        public double convertToFahrenheit(double temperature) {
-            temperature = 1.8*temperature + 32;
-            return temperature;
-        }
 
         @Override
         protected String[] doInBackground(String... postcode) {
