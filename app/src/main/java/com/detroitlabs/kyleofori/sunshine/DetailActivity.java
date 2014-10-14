@@ -43,7 +43,7 @@ public class DetailActivity extends ActionBarActivity {
     }
 
 
-    private String[] getLatAndLonFromJson (String latAndLonStr)
+    private String getLatAndLonFromJson (String latAndLonStr)
             throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
@@ -54,52 +54,16 @@ public class DetailActivity extends ActionBarActivity {
 
         JSONObject latAndLon = new JSONObject(latAndLonStr);
         JSONObject coordinates = latAndLon.getJSONObject(OWM_COORD);
-        JSONObject latitude = coordinates.getJSONObject(OWM_LAT);
-        JSONObject longitude = coordinates.getJSONObject(OWM_LON);
+        //These JSON objects are the pairs latitude: ~~~~ and longitude: ~~~~~.
+        JSONObject jsonLatitude = coordinates.getJSONObject(OWM_LAT);
+        JSONObject jsonLongitude = coordinates.getJSONObject(OWM_LON);
+        //The following will give us those numbers that we need.
+        String latitude = jsonLatitude.getString(OWM_LAT);
+        String longitude = jsonLongitude.getString(OWM_LON);
 
+        String resultString = latitude + "," + longitude;
 
-        String[] coordinates = new String[NUM_COORDINATES_IN_A_PAIR];
-        for (int i = 0; i < coordinatesArray.length(); i++) {
-            // For now, using the format "Day, description, hi/low"
-            String latCoordinate;
-            String lonCoordinate;
-
-            // Get the JSON object representing the day
-            JSONObject latitude = weatherArray.getJSONObject(i);
-            JSONObject longitude =
-
-            // The date/time is returned as a long.  We need to convert that
-            // into something human-readable, since most people won't read "1400356800" as
-            // "this saturday".
-            long dateTime = dayForecast.getLong(OWM_DATETIME);
-            day = getReadableDateString(dateTime);
-
-            // description is in a child array called "weather", which is 1 element long.
-            JSONObject weatherObject = dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
-            description = weatherObject.getString(OWM_DESCRIPTION);
-
-            // Temperatures are in a child object called "temp".  Try not to name variables
-            // "temp" when working with temperature.  It confuses everybody.
-            JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
-            double high = temperatureObject.getDouble(OWM_MAX);
-            double low = temperatureObject.getDouble(OWM_MIN);
-
-            // KO - I'd like a check for the setting that we're on, which would multiply
-            // the Celsius temperature by 1.8 and add 32 if the mode were imperial.
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-            boolean isImperial = prefs.getString("temperature",     //prefs.getString() has 2 parameters
-                    getString(R.string.pref_temp_label)).equals("Imperial");
-            if(isImperial) {
-                high = convertToFahrenheit(high);
-                low = convertToFahrenheit(low);
-            }
-
-            highAndLow = formatHighLows(high, low);
-            resultStrs[i] = day + " - " + description + " - " + highAndLow;
-        }
-
-        return resultStrs;
+        return resultString;
     }
 
 
