@@ -49,6 +49,17 @@ public class DetailActivity extends ActionBarActivity {
         }
         if (id == R.id.action_see_preferred_location) {
 
+
+            Uri.Builder builder = new Uri.Builder();
+            builder.scheme("geo").authority("0,0")
+                    .appendQueryParameter("q", "lat,lng"+"(Preferred Location")
+
+//            String myUrl = builder.build().toString();
+            Uri geoLocation = builder.build();
+            
+            "geo:0,0?q=lat,lng(Preferred Location)";
+
+
             //Should I now make strings for geoLocation?
             public void showMap(Uri geoLocation) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
