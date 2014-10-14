@@ -50,7 +50,6 @@ public class DetailActivity extends ActionBarActivity {
         final String OWM_LAT = "lat";
         final String OWM_LON = "lon";
         final String OWM_COORD = "coord";
-        final int NUM_COORDINATES_IN_A_PAIR = 2;
         String zoomLevel = "13z";
 
         JSONObject latAndLon = new JSONObject(latAndLonStr);
@@ -67,14 +66,6 @@ public class DetailActivity extends ActionBarActivity {
         return resultString;
     }
 
-
-    private void showMap(Uri geoLocation) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(geoLocation);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -100,12 +91,20 @@ public class DetailActivity extends ActionBarActivity {
 
 //            String myUrl = builder.build().toString();
                 Uri uri = builder.build();
+                openWebPage(uri);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void openWebPage(Uri url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, url);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
     /**
