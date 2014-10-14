@@ -267,7 +267,7 @@ public class ForecastFragment extends Fragment {
                 }
                 forecastJsonStr = buffer.toString();
 
-                gWDFJ = getWeatherDataFromJson(forecastJsonStr, 7);
+                gWDFJ = AsyncTaskClass.getWeatherDataFromJson(forecastJsonStr, 7);
 
             }
             catch (JSONException e){

@@ -14,7 +14,7 @@ import java.util.Date;
  * Created by kyleofori on 10/14/14.
  */
 public class AsyncTaskClass {
-    private String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
+    public static String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
             throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
