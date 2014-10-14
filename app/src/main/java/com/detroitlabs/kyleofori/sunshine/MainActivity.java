@@ -60,15 +60,6 @@ public class MainActivity extends ActionBarActivity {
             startActivity(i);
             return true;
         }
-        if(id == R.id.action_see_preferred_location) {
-            public void showMap(Uri geoLocation) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(geoLocation);
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                }
-            }
-        }
         return super.onOptionsItemSelected(item);
     }
 }

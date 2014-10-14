@@ -94,7 +94,7 @@ public class DetailActivity extends ActionBarActivity {
 
                 Uri.Builder builder = new Uri.Builder();
                 builder.scheme("geo").authority("0,0")
-                        .appendQueryParameter("q", getLatAndLonFromJson(latAndLonStr) + "(Preferred Location")
+                        .appendQueryParameter("q", getLatAndLonFromJson(latAndLonStr) + "(Preferred Location");
 
 //            String myUrl = builder.build().toString();
                 Uri geoLocation = builder.build();
