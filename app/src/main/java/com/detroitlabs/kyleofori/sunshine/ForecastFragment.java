@@ -234,8 +234,8 @@ public class ForecastFragment extends Fragment {
             final String OWM_DATETIME = "dt";
             final String OWM_DESCRIPTION = "main";
 
-            JSONObject forecastJson = new JSONObject(forecastJsonStr);
-            JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
+            JSONObject forecastJson = new JSONObject(forecastJsonStr); //this one is not in the JSON data.
+            JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST); //this is found in the list object of the JSON data.
 
             String[] resultStrs = new String[numDays];
             for (int i = 0; i < weatherArray.length(); i++) {
