@@ -51,6 +51,7 @@ public class DetailActivity extends ActionBarActivity {
         final String OWM_LON = "lon";
         final String OWM_COORD = "coord";
         final int NUM_COORDINATES_IN_A_PAIR = 2;
+        String zoomLevel = "13z";
 
         JSONObject latAndLon = new JSONObject(latAndLonStr);
         JSONObject coordinates = latAndLon.getJSONObject(OWM_COORD);
@@ -61,7 +62,7 @@ public class DetailActivity extends ActionBarActivity {
         String latitude = jsonLatitude.getString(OWM_LAT);
         String longitude = jsonLongitude.getString(OWM_LON);
 
-        String resultString = latitude + "," + longitude;
+        String resultString = latitude + "," + longitude + "," + zoomLevel;
 
         return resultString;
     }
@@ -93,19 +94,16 @@ public class DetailActivity extends ActionBarActivity {
                 String latAndLonStr = null;
 
                 Uri.Builder builder = new Uri.Builder();
-                builder.scheme("geo").authority("0,0")
-                        .appendQueryParameter("q", getLatAndLonFromJson(latAndLonStr) + "(Preferred Location");
+                builder.scheme("http").authority("www.google.com")
+                        .appendPath("maps")
+                        .appendPath("@" + getLatAndLonFromJson(latAndLonStr));
 
 //            String myUrl = builder.build().toString();
-                Uri geoLocation = builder.build();
+                Uri uri = builder.build();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-            //    "geo:0,0?q=lat,lng(Preferred Location)";
-
-
-            //Should I now make strings for geoLocation?
 
         return super.onOptionsItemSelected(item);
     }
