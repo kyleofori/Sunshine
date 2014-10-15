@@ -1,5 +1,6 @@
 package com.detroitlabs.kyleofori.sunshine;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -75,10 +76,14 @@ public class AsyncTaskClass {
 
             // KO - I'd like a check for the setting that we're on, which would multiply
             // the Celsius temperature by 1.8 and add 32 if the mode were imperial.
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+//            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity();
+            Context context = getActivity();
+            SharedPreferences sharedPref = context.getSharedPreferences(
+                    getString(R.string.pref_temp_label), Context.MODE_PRIVATE);
 
             boolean isImperial = prefs.getString("temperature",     //prefs.getString() has 2 parameters
-                    getString(R.string.pref_temp_label)).equals("Imperial");
+                    String.valueOf(R.string.pref_temp_label)).equals("Imperial");
+                    //may try String.valueOf() instead of getString if can't fix getActivity()
             if(isImperial) {
                 high = convertToFahrenheit(high);
                 low = convertToFahrenheit(low);
