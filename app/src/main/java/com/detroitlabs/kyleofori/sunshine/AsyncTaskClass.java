@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -44,6 +45,9 @@ public class AsyncTaskClass {
         String resultString = latitude + "," + longitude + "," + zoomLevel;
 
         String[] resultStrs = new String[numDays];
+
+        ArrayList<String> ultimateResultStrs = new ArrayList<String>();
+
         for (int i = 0; i < weatherArray.length(); i++) {
             // For now, using the format "Day, description, hi/low"
             String day;
@@ -82,12 +86,16 @@ public class AsyncTaskClass {
 
             highAndLow = formatHighLows(high, low);
             resultStrs[i] = day + " - " + description + " - " + highAndLow;
+
+            ultimateResultStrs.add(resultStrs[i]);
         }
 
-        return resultStrs;
+        ultimateResultStrs.add(resultString);
+        String[] allInfo = new String[ultimateResultStrs.size()];
+        return allInfo;
     }
 
-    private String getReadableDateString(long time){
+    private static String getReadableDateString(long time){
         // Because the API returns a unix timestamp (measured in seconds),
         // it must be converted to milliseconds in order to be converted to valid date.
         Date date = new Date(time * 1000);
@@ -98,7 +106,7 @@ public class AsyncTaskClass {
     /**
      * Prepare the weather high/lows for presentation.
      */
-    private String formatHighLows(double high, double low) {
+    private static String formatHighLows(double high, double low) {
         // For presentation, assume the user doesn't care about tenths of a degree.
         long roundedHigh = Math.round(high);
         long roundedLow = Math.round(low);
@@ -115,7 +123,7 @@ public class AsyncTaskClass {
      * into an Object hierarchy for us.
      */
 
-    public double convertToFahrenheit(double temperature) {
+    private static double convertToFahrenheit(double temperature) {
         temperature = 1.8*temperature + 32;
         return temperature;
     }
