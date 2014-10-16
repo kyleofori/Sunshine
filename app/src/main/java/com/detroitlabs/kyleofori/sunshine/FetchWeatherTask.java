@@ -29,7 +29,13 @@ import java.util.Date;
 public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName(); //needs to match name of class
+
     private Context mContext;
+
+    public Context getContext() {
+        return mContext;
+    }
+
 
     public interface WeatherFetchedListener {
         public void weatherReceived(String[] weatherData);
@@ -63,27 +69,14 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
     }
 
     /* The date/time conversion code is going to be moved outside the asynctask later,
-     * so for convenience we're breaking it out into its own method now.
+     * so for convenience we're breaking it out into its own method now. USED TO BE  HERE
      */
-    private String getReadableDateString(long time) {
-        // Because the API returns a unix timestamp (measured in seconds),
-        // it must be converted to milliseconds in order to be converted to valid date.
-        Date date = new Date(time * 1000);
-        SimpleDateFormat format = new SimpleDateFormat("E, MMM d");
-        return format.format(date).toString();
-    }
+
 
     /**
-     * Prepare the weather high/lows for presentation.
+     * Prepare the weather high/lows for presentation. USED TO BE HERE
      */
-    private String formatHighLows(double high, double low) {
-        // For presentation, assume the user doesn't care about tenths of a degree.
-        long roundedHigh = Math.round(high);
-        long roundedLow = Math.round(low);
 
-        String highLowStr = roundedHigh + "/" + roundedLow;
-        return highLowStr;
-    }
 
     /**
      * Take the String representing the complete forecast in JSON Format and
@@ -157,10 +150,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
          * into an Object hierarchy for us.
          */
 
-    public double convertToFahrenheit(double temperature) {
-        temperature = 1.8 * temperature + 32;
-        return temperature;
-    }
+
 
     @Override
     protected String[] doInBackground(String... postcode) {
@@ -238,7 +228,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             }
             forecastJsonStr = buffer.toString();
 
-            gWDFJ = getWeatherDataFromJson(forecastJsonStr, 7);
+            gWDFJ = myWeatherReport.getWeatherDataFromJson(forecastJsonStr, 7);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -266,4 +256,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
     public void setOnWeatherFetched(WeatherFetchedListener onWeatherFetchedListener) {
         this.onWeatherFetchedListener = onWeatherFetchedListener;
     }
+
+
 }

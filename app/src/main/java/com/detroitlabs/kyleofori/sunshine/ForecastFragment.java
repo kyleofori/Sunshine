@@ -52,6 +52,12 @@ public class ForecastFragment extends Fragment implements FetchWeatherTask.Weath
 
     private ListView mListView;
 
+    private Context mContext;
+
+    public Context getContext() {
+        return mContext;
+    }
+
     public ForecastFragment() {
     }
 
@@ -157,6 +163,9 @@ public class ForecastFragment extends Fragment implements FetchWeatherTask.Weath
 //            String location = prefs.getString(getString(R.string.pref_location_key),
 //                    getString(R.string.pref_location_default));
 //            weatherTask.execute(location);
+
+        boolean isImperial = prefs.getString("temperature",     //prefs.getString() has 2 parameters
+                mContext.getString(R.string.pref_temp_label)).equals("Imperial");
     }
 
     @Override

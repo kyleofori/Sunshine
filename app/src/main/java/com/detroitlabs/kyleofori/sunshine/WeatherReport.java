@@ -7,11 +7,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by kyleofori on 10/15/14.
  */
 public class WeatherReport {
-    private String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
+
+
+    public String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
             throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
@@ -54,11 +59,14 @@ public class WeatherReport {
 
             // KO - I'd like a check for the setting that we're on, which would multiply
             // the Celsius temperature by 1.8 and add 32 if the mode were imperial.
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 
-            boolean isImperial = prefs.getString("temperature",     //prefs.getString() has 2 parameters
-                    mContext.getString(R.string.pref_temp_label)).equals("Imperial");
-            if (isImperial) {
+
+            //WORKING ON THIS TEMPERATURE METHOD 2014-10-16
+//            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext);
+//
+//            boolean isImperial = prefs.getString("temperature",     //prefs.getString() has 2 parameters
+//                    mContext.getString(R.string.pref_temp_label)).equals("Imperial");
+            if (FetchWeatherTask.) {
                 high = convertToFahrenheit(high);
                 low = convertToFahrenheit(low);
             }
@@ -68,5 +76,27 @@ public class WeatherReport {
         }
 
         return resultStrs;
+    }
+
+    private String formatHighLows(double high, double low) {
+        // For presentation, assume the user doesn't care about tenths of a degree.
+        long roundedHigh = Math.round(high);
+        long roundedLow = Math.round(low);
+
+        String highLowStr = roundedHigh + "/" + roundedLow;
+        return highLowStr;
+    }
+
+    private String getReadableDateString(long time) {
+        // Because the API returns a unix timestamp (measured in seconds),
+        // it must be converted to milliseconds in order to be converted to valid date.
+        Date date = new Date(time * 1000);
+        SimpleDateFormat format = new SimpleDateFormat("E, MMM d");
+        return format.format(date).toString();
+    }
+
+    private double convertToFahrenheit(double temperature) {
+        temperature = 1.8 * temperature + 32;
+        return temperature;
     }
 }
