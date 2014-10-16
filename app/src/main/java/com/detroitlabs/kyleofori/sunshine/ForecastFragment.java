@@ -52,12 +52,6 @@ public class ForecastFragment extends Fragment implements FetchWeatherTask.Weath
 
     private ListView mListView;
 
-    private Context mContext;
-
-    public Context getContext() {
-        return mContext;
-    }
-
     public ForecastFragment() {
     }
 
@@ -139,6 +133,10 @@ public class ForecastFragment extends Fragment implements FetchWeatherTask.Weath
         return rootView;
     }
 
+
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+//NullPointerException here, meaning there are no default shared preferences yet...
+
     private void updateWeather() {
         FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
         weatherTask.setOnWeatherFetched(this);
@@ -148,7 +146,8 @@ public class ForecastFragment extends Fragment implements FetchWeatherTask.Weath
 //ATTEMPT 1            String name = getString(R.xml.pref_general);
 //ATTEMPT 2            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 /*ATTEMPT 3*/
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        //10-16: about to try moving prefs out of this method.
 
 //            prefs.getString(R.xml.pr)
 ///*ATTEMPT 4*/                     getActivity().getSharedPreferences(prefs, Context.MODE_PRIVATE);
@@ -164,16 +163,6 @@ public class ForecastFragment extends Fragment implements FetchWeatherTask.Weath
 //                    getString(R.string.pref_location_default));
 //            weatherTask.execute(location);
 
-        boolean isImperial = prefs.getString("temperature",     //prefs.getString() has 2 parameters
-                mContext.getString(R.string.pref_temp_label)).equals("Imperial");
-
-        if (isImperial) {
-
-
-
-            FetchWeatherTask.myWeatherReport.getWeatherDataFromJson(forecastJsonStr, 7).high = convertToFahrenheit(high);
-            low = convertToFahrenheit(low);
-        }
 
 
     }
@@ -191,10 +180,5 @@ public class ForecastFragment extends Fragment implements FetchWeatherTask.Weath
         for (String x: weatherData) {
          mForecastAdapter.add(x);
         };
-    }
-
-    private double convertToFahrenheit(double temperature) {
-        temperature = 1.8 * temperature + 32;
-        return temperature;
     }
 }

@@ -1,5 +1,6 @@
 package com.detroitlabs.kyleofori.sunshine;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -15,7 +16,13 @@ import java.util.Date;
  */
 public class WeatherReport {
 
+    ForecastFragment forecastFragment = new ForecastFragment();
 
+    private Context mContext;
+
+    public Context getContext() {
+        return mContext;
+    }
     public String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
             throws JSONException {
 
@@ -72,6 +79,14 @@ public class WeatherReport {
 //            ForecastFragment forecastFragment = new ForecastFragment();
 //            if (forecastFragment.) {
 
+            boolean isImperial = forecastFragment.prefs.getString("temperature",     //prefs.getString() has 2 parameters
+                    mContext.getString(R.string.pref_temp_label)).equals("Imperial");
+
+            if (isImperial) {
+
+                high = convertToFahrenheit(high);
+                low = convertToFahrenheit(low);
+            }
 
             highAndLow = formatHighLows(high, low);
             resultStrs[i] = day + " - " + description + " - " + highAndLow;
@@ -79,6 +94,7 @@ public class WeatherReport {
 
         return resultStrs;
     }
+
 
     private static String formatHighLows(double high, double low) {
         // For presentation, assume the user doesn't care about tenths of a degree.
@@ -95,6 +111,11 @@ public class WeatherReport {
         Date date = new Date(time * 1000);
         SimpleDateFormat format = new SimpleDateFormat("E, MMM d");
         return format.format(date).toString();
+    }
+
+    private double convertToFahrenheit(double temperature) {
+        temperature = 1.8 * temperature + 32;
+        return temperature;
     }
 
 }
