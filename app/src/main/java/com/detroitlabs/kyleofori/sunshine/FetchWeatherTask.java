@@ -83,7 +83,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
      * pull out the data we need to construct the Strings needed for the wireframes.
      */
 
-    WeatherReport myWeatherReport = new WeatherReport();
+    static WeatherReport myWeatherReport = new WeatherReport();
 
 //    private String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
 //            throws JSONException {

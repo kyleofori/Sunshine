@@ -66,10 +66,12 @@ public class WeatherReport {
 //
 //            boolean isImperial = prefs.getString("temperature",     //prefs.getString() has 2 parameters
 //                    mContext.getString(R.string.pref_temp_label)).equals("Imperial");
-            if (FetchWeatherTask.) {
-                high = convertToFahrenheit(high);
-                low = convertToFahrenheit(low);
-            }
+
+
+            //WOULD MAKING A NEW FORECAST FRAGMENT WORK?
+//            ForecastFragment forecastFragment = new ForecastFragment();
+//            if (forecastFragment.) {
+
 
             highAndLow = formatHighLows(high, low);
             resultStrs[i] = day + " - " + description + " - " + highAndLow;
@@ -78,7 +80,7 @@ public class WeatherReport {
         return resultStrs;
     }
 
-    private String formatHighLows(double high, double low) {
+    private static String formatHighLows(double high, double low) {
         // For presentation, assume the user doesn't care about tenths of a degree.
         long roundedHigh = Math.round(high);
         long roundedLow = Math.round(low);
@@ -87,7 +89,7 @@ public class WeatherReport {
         return highLowStr;
     }
 
-    private String getReadableDateString(long time) {
+    private static String getReadableDateString(long time) {
         // Because the API returns a unix timestamp (measured in seconds),
         // it must be converted to milliseconds in order to be converted to valid date.
         Date date = new Date(time * 1000);
@@ -95,8 +97,4 @@ public class WeatherReport {
         return format.format(date).toString();
     }
 
-    private double convertToFahrenheit(double temperature) {
-        temperature = 1.8 * temperature + 32;
-        return temperature;
-    }
 }

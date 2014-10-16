@@ -166,6 +166,16 @@ public class ForecastFragment extends Fragment implements FetchWeatherTask.Weath
 
         boolean isImperial = prefs.getString("temperature",     //prefs.getString() has 2 parameters
                 mContext.getString(R.string.pref_temp_label)).equals("Imperial");
+
+        if (isImperial) {
+
+
+
+            FetchWeatherTask.myWeatherReport.getWeatherDataFromJson(forecastJsonStr, 7).high = convertToFahrenheit(high);
+            low = convertToFahrenheit(low);
+        }
+
+
     }
 
     @Override
@@ -181,5 +191,10 @@ public class ForecastFragment extends Fragment implements FetchWeatherTask.Weath
         for (String x: weatherData) {
          mForecastAdapter.add(x);
         };
+    }
+
+    private double convertToFahrenheit(double temperature) {
+        temperature = 1.8 * temperature + 32;
+        return temperature;
     }
 }
