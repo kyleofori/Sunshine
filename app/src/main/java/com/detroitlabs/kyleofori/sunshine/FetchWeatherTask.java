@@ -39,10 +39,10 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
     private WeatherFetchedListener onWeatherFetchedListener;
 
 
-
-    public FetchWeatherTask() {
-        super();
-    }
+    //I'm not clear on why this constructor was overloaded. So I got rid of it!
+//    public FetchWeatherTask() {
+//        super();
+//    }
 
     public FetchWeatherTask(Context context) {
         super();
