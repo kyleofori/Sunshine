@@ -60,6 +60,19 @@ public class MainActivity extends ActionBarActivity {
             startActivity(i);
             return true;
         }
+        if (id == R.id.action_see_preferred_location) {
+            Intent i = new Intent();
+            i.setAction(i.ACTION_VIEW);
+//            i.putExtra(i.EXTRA_TEXT, ___); //the string that goes here should be the coordinates...or the Uri.
+
+            //Verify that the intent will resolve to an activity.
+            if (i.resolveActivity(getPackageManager()) != null) {
+                startActivity(i);
+            }
+            else {
+                Log.e("MainActivity", "We can't open any internet"); //I'm sure this shouldn't be hard-coded.
+            }
+        }
         return super.onOptionsItemSelected(item);
     }
 }

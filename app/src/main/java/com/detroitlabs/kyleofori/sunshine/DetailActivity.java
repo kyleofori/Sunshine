@@ -81,7 +81,6 @@ public class DetailActivity extends ActionBarActivity {
         if (id == R.id.action_see_preferred_location) {
 
             try {
-
                 String latAndLonStr = null;
 
                 Uri.Builder builder = new Uri.Builder();
