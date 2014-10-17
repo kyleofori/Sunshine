@@ -16,6 +16,7 @@ import java.util.Date;
  */
 public class WeatherReport {
 
+    //Constants.
     private final String[] weatherOutput;
     private final int numDays;
 
@@ -24,6 +25,8 @@ public class WeatherReport {
 
     //private ForecastFragment forecastFragment;
 
+
+    //Constructor. numDays could be useful for defining how many days you want on screen.
     public WeatherReport(String[] weatherOutput, int numDays) {
 
         this.weatherOutput = weatherOutput;
@@ -32,19 +35,20 @@ public class WeatherReport {
 //        sharedPrefs = context.getSharedPreferences(context.getString(R.string.pref_temp_label), Context.MODE_PRIVATE); //This should probably mean something
     }
 
-    public static WeatherReport fromJson(String forecastJsonStr, int numDays){  //"static factory method" or "builder"
+    //"static factory method" or "builder" called FROMJSON. IT'S CALLED FROMJSON. This method returns a WeatherReport.
+    public static WeatherReport fromJson(String forecastJsonStr, int numDays){
 
-        WeatherReport weatherReport = null;
+        WeatherReport weatherOutput = null;
 
         try {
             String[] weatherDataFromJson = getWeatherDataFromJson(forecastJsonStr, numDays);
-            weatherReport = new WeatherReport(weatherDataFromJson, numDays);
+            weatherOutput = new WeatherReport(weatherDataFromJson, numDays);
         }
         catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return weatherReport;
+        return weatherOutput; //This will be a parameter for the constructor above.
     }
 
     public static String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
@@ -119,7 +123,7 @@ public class WeatherReport {
     private static String formatHighLows(double high, double low) {
         // For presentation, assume the user doesn't care about tenths of a degree.
         SharedPreferences sharedPrefs = PreferenceManager
-                .getDefaultSharedPreferences(forecastFragment.getActivity());
+                .getDefaultSharedPreferences(ForecastFragment.getActivity());
 
         String unitType = sharedPrefs.getString(
                 "temperature",

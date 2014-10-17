@@ -48,8 +48,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         public void weatherReceived(String[] weatherData);
     }
 
-
-
     private WeatherFetchedListener onWeatherFetchedListener;
 
     public FetchWeatherTask() {
@@ -59,7 +57,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
     public FetchWeatherTask(Context context) {
         super();
         mContext = context;
-        myWeatherReport = new WeatherReport(mContext);
+        myWeatherReport = new WeatherReport(WeatherReport.fromJson(forecastJsonStr, 7), 7);
     }
 
     @Override
