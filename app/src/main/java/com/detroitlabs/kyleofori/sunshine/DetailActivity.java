@@ -42,31 +42,6 @@ public class DetailActivity extends ActionBarActivity {
         return true;
     }
 
-
-    private String getLatAndLonFromJson(String latAndLonStr)
-            throws JSONException {
-
-        // These are the names of the JSON objects that need to be extracted.
-        final String OWM_LAT = "lat";
-        final String OWM_LON = "lon";
-        final String OWM_COORD = "coord";
-        String zoomLevel = "13z";
-
-        JSONObject latAndLon = new JSONObject(latAndLonStr);
-        JSONObject coordinates = latAndLon.getJSONObject(OWM_COORD);
-        //These JSON objects are the pairs latitude: ~~~~ and longitude: ~~~~~.
-        JSONObject jsonLatitude = coordinates.getJSONObject(OWM_LAT);
-        JSONObject jsonLongitude = coordinates.getJSONObject(OWM_LON);
-        //The following will give us those numbers that we need.
-        String latitude = jsonLatitude.getString(OWM_LAT);
-        String longitude = jsonLongitude.getString(OWM_LON);
-
-        String resultString = latitude + "," + longitude + "," + zoomLevel;
-
-        return resultString;
-    }
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -80,20 +55,17 @@ public class DetailActivity extends ActionBarActivity {
         }
         if (id == R.id.action_see_preferred_location) {
 
-            try {
+            //10/17 I'm removing out the try-catch until I get the use of JSON anything back.
                 String latAndLonStr = null;
 
                 Uri.Builder builder = new Uri.Builder();
                 builder.scheme("http").authority("www.google.com")
-                        .appendPath("maps")
-                        .appendPath("@" + getLatAndLonFromJson(latAndLonStr));
+                        .appendPath("maps");
+//                        .appendPath("@" + getLatAndLonFromJson(latAndLonStr));
 
 //            String myUrl = builder.build().toString();
                 Uri uri = builder.build();
                 openWebPage(uri);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         }
 
         return super.onOptionsItemSelected(item);

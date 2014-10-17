@@ -162,6 +162,31 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         return temperature;
     }
 
+
+    private String getLatAndLonFromJson(String latAndLonStr)
+            throws JSONException {
+
+        // These are the names of the JSON objects that need to be extracted.
+        final String OWM_LAT = "lat";
+        final String OWM_LON = "lon";
+        final String OWM_COORD = "coord";
+        String zoomLevel = "13z";
+
+        JSONObject latAndLon = new JSONObject(latAndLonStr);
+        JSONObject coordinates = latAndLon.getJSONObject(OWM_COORD);
+        //These JSON objects are the pairs latitude: ~~~~ and longitude: ~~~~~.
+        JSONObject jsonLatitude = coordinates.getJSONObject(OWM_LAT);
+        JSONObject jsonLongitude = coordinates.getJSONObject(OWM_LON);
+        //The following will give us those numbers that we need.
+        String latitude = jsonLatitude.getString(OWM_LAT);
+        String longitude = jsonLongitude.getString(OWM_LON);
+
+        String resultString = latitude + "," + longitude + "," + zoomLevel;
+
+        return resultString;
+    }
+
+    
     @Override
     protected String[] doInBackground(String... postcode) {
         if (postcode.length == 0) {
