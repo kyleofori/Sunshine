@@ -55,6 +55,16 @@ public class ForecastFragment extends Fragment implements FetchWeatherTask.Weath
     public ForecastFragment() {
     }
 
+    private Context mContext;
+
+    public void setContext(Context context) {
+        mContext = context;
+    }
+
+    public Context getContext() {
+        return mContext;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,7 +144,7 @@ public class ForecastFragment extends Fragment implements FetchWeatherTask.Weath
     }
 
 
-    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
 //NullPointerException here, meaning there are no default shared preferences yet...
 
     private void updateWeather() {
@@ -148,7 +158,7 @@ public class ForecastFragment extends Fragment implements FetchWeatherTask.Weath
 /*ATTEMPT 3*/
 
         //10-16: about to try moving prefs out of this method.
-
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 //            prefs.getString(R.xml.pr)
 ///*ATTEMPT 4*/                     getActivity().getSharedPreferences(prefs, Context.MODE_PRIVATE);
 //            weatherTask.execute(prefs.getString("location", "48214"));  //With help from B. Zabor

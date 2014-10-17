@@ -16,14 +16,38 @@ import java.util.Date;
  */
 public class WeatherReport {
 
-    ForecastFragment forecastFragment = new ForecastFragment();
+    private final String[] weatherOutput;
+    private final int numDays;
 
-    private Context mContext;
+//    private final Context context;
+//    private final SharedPreferences sharedPrefs;
 
-    public Context getContext() {
-        return mContext;
+    //private ForecastFragment forecastFragment;
+
+    public WeatherReport(String[] weatherOutput, int numDays) {
+
+        this.weatherOutput = weatherOutput;
+        this.numDays = numDays;
+//        this.context = context;
+//        sharedPrefs = context.getSharedPreferences(context.getString(R.string.pref_temp_label), Context.MODE_PRIVATE); //This should probably mean something
     }
-    public String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
+
+    public static WeatherReport fromJson(String forecastJsonStr, int numDays){  //"static factory method" or "builder"
+
+        WeatherReport weatherReport = null;
+
+        try {
+            String[] weatherDataFromJson = getWeatherDataFromJson(forecastJsonStr, numDays);
+            weatherReport = new WeatherReport(weatherDataFromJson, numDays);
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return weatherReport;
+    }
+
+    public static String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
             throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
@@ -78,15 +102,11 @@ public class WeatherReport {
             //WOULD MAKING A NEW FORECAST FRAGMENT WORK?
 //            ForecastFragment forecastFragment = new ForecastFragment();
 //            if (forecastFragment.) {
-
-            boolean isImperial = forecastFragment.prefs.getString("temperature",     //prefs.getString() has 2 parameters
-                    mContext.getString(R.string.pref_temp_label)).equals("Imperial");
-
-            if (isImperial) {
-
-                high = convertToFahrenheit(high);
-                low = convertToFahrenheit(low);
-            }
+//            Context mContext = forecastFragment.getActivity();
+//
+//            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+//
+//
 
             highAndLow = formatHighLows(high, low);
             resultStrs[i] = day + " - " + description + " - " + highAndLow;
@@ -98,6 +118,22 @@ public class WeatherReport {
 
     private static String formatHighLows(double high, double low) {
         // For presentation, assume the user doesn't care about tenths of a degree.
+        SharedPreferences sharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(forecastFragment.getActivity());
+
+        String unitType = sharedPrefs.getString(
+                "temperature",
+                        "metric"); //I shouldn't have to hard code this.
+
+//        boolean isImperial = sharedPrefs.getString("temperature",     //prefs.getString() has 2 parameters
+//                getString(R.string.pref_temp_label)).equals("Imperial");
+//
+        if (unitType.equals("imperial")) { //Shouldn't have to hard code this either, but getString() not working
+
+            high = convertToFahrenheit(high);
+            low = convertToFahrenheit(low);
+        }
+
         long roundedHigh = Math.round(high);
         long roundedLow = Math.round(low);
 
@@ -105,7 +141,7 @@ public class WeatherReport {
         return highLowStr;
     }
 
-    private static String getReadableDateString(long time) {
+    public static String getReadableDateString(long time) {
         // Because the API returns a unix timestamp (measured in seconds),
         // it must be converted to milliseconds in order to be converted to valid date.
         Date date = new Date(time * 1000);
@@ -113,7 +149,7 @@ public class WeatherReport {
         return format.format(date).toString();
     }
 
-    private double convertToFahrenheit(double temperature) {
+    public static double convertToFahrenheit(double temperature) {
         temperature = 1.8 * temperature + 32;
         return temperature;
     }

@@ -32,19 +32,25 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
     private Context mContext;
 
+    /**
+     * Take the String representing the complete forecast in JSON Format and
+     * pull out the data we need to construct the Strings needed for the wireframes.
+     */
+
+    WeatherReport myWeatherReport;
+
+
     public Context getContext() {
         return mContext;
     }
-
 
     public interface WeatherFetchedListener {
         public void weatherReceived(String[] weatherData);
     }
 
 
+
     private WeatherFetchedListener onWeatherFetchedListener;
-
-
 
     public FetchWeatherTask() {
         super();
@@ -53,6 +59,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
     public FetchWeatherTask(Context context) {
         super();
         mContext = context;
+        myWeatherReport = new WeatherReport(mContext);
     }
 
     @Override
@@ -68,6 +75,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
     }
 
+
     /* The date/time conversion code is going to be moved outside the asynctask later,
      * so for convenience we're breaking it out into its own method now. USED TO BE  HERE
      */
@@ -76,14 +84,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
     /**
      * Prepare the weather high/lows for presentation. USED TO BE HERE
      */
-
-
-    /**
-     * Take the String representing the complete forecast in JSON Format and
-     * pull out the data we need to construct the Strings needed for the wireframes.
-     */
-
-    static WeatherReport myWeatherReport = new WeatherReport();
 
 //    private String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
 //            throws JSONException {
