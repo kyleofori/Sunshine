@@ -60,19 +60,41 @@ public class MainActivity extends ActionBarActivity {
             startActivity(i);
             return true;
         }
-        if (id == R.id.action_see_preferred_location) {
-            Intent i = new Intent();
-            i.setAction(i.ACTION_VIEW);
-//            i.putExtra(i.EXTRA_TEXT, ___); //the string that goes here should be the coordinates...or the Uri.
+//        if (id == R.id.action_see_preferred_location) {
+//            Intent i = new Intent();
+//            i.setAction(i.ACTION_VIEW);
+////            i.putExtra(i.EXTRA_TEXT, ___); //the string that goes here should be the coordinates...or the Uri.
+//
+//            //Verify that the intent will resolve to an activity.
+//            if (i.resolveActivity(getPackageManager()) != null) {
+//                startActivity(i);
+//            }
+//            else {
+//                Log.e("MainActivity", "We can't open any internet"); //I'm sure this shouldn't be hard-coded.
+//            }
+//        }
 
-            //Verify that the intent will resolve to an activity.
-            if (i.resolveActivity(getPackageManager()) != null) {
-                startActivity(i);
-            }
-            else {
-                Log.e("MainActivity", "We can't open any internet"); //I'm sure this shouldn't be hard-coded.
-            }
+        if (id == R.id.action_see_preferred_location) {
+
+            //10/17 I'm removing out the try-catch until I get the use of JSON anything back.
+            String latAndLonStr = null;
+
+            Uri.Builder builder = new Uri.Builder();
+            builder.scheme("http").authority("www.google.com")
+                    .appendPath("maps");
+//                        .appendPath("@" + getLatAndLonFromJson(latAndLonStr));
+
+//            String myUrl = builder.build().toString();
+            Uri uri = builder.build();
+            openWebPage(uri);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void openWebPage(Uri url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, url);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 }
