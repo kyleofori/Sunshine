@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -22,6 +23,8 @@ import org.json.JSONObject;
 
 
 public class DetailActivity extends ActionBarActivity {
+
+    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,14 @@ public class DetailActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.detail, menu);
+
+        //Locate menu item with ShareActionProvider
+        MenuItem menuItem = menu.findItem(R.id.menu_item_share);
+
+        //Fetch and store ShareActionProvider
+        mShareActionProvider = (ShareActionProvider) menuItem.getActionProvider();
+
+        //Return true to display menu
         return true;
     }
 
