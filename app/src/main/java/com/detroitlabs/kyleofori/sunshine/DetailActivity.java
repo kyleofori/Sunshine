@@ -43,6 +43,7 @@ public class DetailActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.detail, menu);
 
+//        http://developer.android.com/training/sharing/shareaction.html
         //Locate menu item with ShareActionProvider
         MenuItem menuItem = menu.findItem(R.id.menu_item_share);
 
@@ -86,6 +87,12 @@ public class DetailActivity extends ActionBarActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW, url);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
+        }
+    }
+
+    private void setShareIntent (Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
         }
     }
 
