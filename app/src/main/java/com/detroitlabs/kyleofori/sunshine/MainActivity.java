@@ -83,8 +83,9 @@ public class MainActivity extends ActionBarActivity {
 
             Uri.Builder builder = new Uri.Builder();
             builder.scheme("http").authority("www.google.com")
-                    .appendPath("maps");
-//                        .appendPath("@" + getLatAndLonFromJson(latAndLonStr));
+                    .appendPath("maps")
+                    .appendPath("place")
+                    .appendPath(openPreferredLocationInMap());
 
 //            String myUrl = builder.build().toString();
             Uri uri = builder.build();
@@ -93,11 +94,12 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void openPreferredLocationInMap() {
+    private String openPreferredLocationInMap() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         String location = sharedPrefs.getString(
                 "location",
                 getString(R.string.pref_location_default));
+        return location;
     }
 
     public void openWebPage(Uri url) {
