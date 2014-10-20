@@ -85,8 +85,10 @@ public class DetailActivity extends ActionBarActivity {
         if(id == R.id.menu_item_share) {
             Intent shareIntent = new Intent();
             shareIntent.setAction(Intent.ACTION_SEND);
+            //Something needs to be done here to get that text.
             shareIntent.putExtra(Intent.EXTRA_TEXT, "#SunshineApp");
             shareIntent.setType("text/plain");
+            setShareIntent(shareIntent); //Not sure if this is making a difference.
             startActivity(shareIntent);
         }
 
