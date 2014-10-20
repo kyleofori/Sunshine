@@ -82,6 +82,14 @@ public class DetailActivity extends ActionBarActivity {
                 openWebPage(uri);
         }
 
+        if(id == R.id.menu_item_share) {
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "#SunshineApp");
+            shareIntent.setType("text/plain");
+            startActivity(shareIntent);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
