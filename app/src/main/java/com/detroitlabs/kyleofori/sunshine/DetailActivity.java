@@ -1,14 +1,9 @@
 package com.detroitlabs.kyleofori.sunshine;
 
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.preference.PreferenceManager;
-import android.provider.DocumentsContract;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,18 +15,12 @@ import android.os.Build;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 
 public class DetailActivity extends ActionBarActivity {
 
     private ShareActionProvider mShareActionProvider;
 
-//    Intent intent = this.getIntent();
-//    String message = intent.getStringExtra(ForecastFragment.EXTRA_MESSAGE); //There's a problem in this line.
-    static String massage;
+    static String message;
 
 
     @Override
@@ -95,7 +84,7 @@ public class DetailActivity extends ActionBarActivity {
             //Something needs to be done here to get that text.
             //The text is the same as what's being passed to the RootView/TextView--see bottom.
 
-            shareIntent.putExtra(Intent.EXTRA_TEXT, massage + " #SunshineApp");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, message + " #SunshineApp");
             shareIntent.setType("text/plain");
             setShareIntent(shareIntent); //Not sure if this is making a difference.
             startActivity(shareIntent);
@@ -143,9 +132,9 @@ public class DetailActivity extends ActionBarActivity {
 
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
             if(intent != null && intent.hasExtra(ForecastFragment.EXTRA_MESSAGE)) {
-                massage = intent.getStringExtra(ForecastFragment.EXTRA_MESSAGE);
+                message = intent.getStringExtra(ForecastFragment.EXTRA_MESSAGE);
                 TextView textView = (TextView) rootView.findViewById(R.id.detail_text);
-                textView.setText(massage);
+                textView.setText(message);
             }
             return rootView;
         }
