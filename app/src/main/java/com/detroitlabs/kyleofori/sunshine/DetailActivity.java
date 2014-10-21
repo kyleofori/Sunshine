@@ -3,25 +3,23 @@ package com.detroitlabs.kyleofori.sunshine;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
-import android.widget.ShareActionProvider;
+import android.support.v7.widget.ShareActionProvider;
 import android.widget.TextView;
 
 
 public class DetailActivity extends ActionBarActivity {
-
-    private ShareActionProvider mShareActionProvider;
-
-    static String message;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,28 +27,12 @@ public class DetailActivity extends ActionBarActivity {
         setContentView(R.layout.activity_detail);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new DetailFragment())
                     .commit();
         }
     }
 
 
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.detail, menu);
-
-//        http://developer.android.com/training/sharing/shareaction.html
-        //Locate menu item with ShareActionProvider
-        MenuItem menuItem = menu.findItem(R.id.menu_item_share);
-
-        //Fetch and store ShareActionProvider
-        mShareActionProvider = (ShareActionProvider) menuItem.getActionProvider();
-
-        //Return true to display menu
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -78,30 +60,19 @@ public class DetailActivity extends ActionBarActivity {
                 openWebPage(uri);
         }
 
-        if(id == R.id.menu_item_share) {
-            Intent shareIntent = new Intent();
-            shareIntent.setAction(Intent.ACTION_SEND);
-            //Something needs to be done here to get that text.
-            //The text is the same as what's being passed to the RootView/TextView--see bottom.
-
-            shareIntent.putExtra(Intent.EXTRA_TEXT, message + " #SunshineApp");
-            shareIntent.setType("text/plain");
-            setShareIntent(shareIntent); //Not sure if this is making a difference.
-            startActivity(shareIntent);
-        }
+//        if(id == R.id.menu_item_share) {
+//            Intent shareIntent = new Intent();
+//            shareIntent.setAction(Intent.ACTION_SEND);
+//            //Something needs to be done here to get that text.
+//            //The text is the same as what's being passed to the RootView/TextView--see bottom.
+//
+//            shareIntent.putExtra(Intent.EXTRA_TEXT, message + " #SunshineApp");
+//            shareIntent.setType("text/plain");
+//            setShareIntent(shareIntent); //Not sure if this is making a difference.
+//            startActivity(shareIntent);
+//        }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public static class DetailFragment extends Fragment {
-
-        private static final String LOG_TAG = DetailFragment.class.getSimpleName();
-
-        private static final String FORECAST_SHARE_HASHTAG = " #SunshineApp";
-        private String mForecastStr;
-
-    public DetailFragment() {
-            setHasOptionsMenu(true);
     }
 
     public void openWebPage(Uri url) {
@@ -111,19 +82,25 @@ public class DetailActivity extends ActionBarActivity {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    private void setShareIntent (Intent shareIntent) {
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareIntent(shareIntent);
-        }
-    }
+//    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+//    private void setShareIntent (Intent shareIntent) {
+//        if (mShareActionProvider != null) {
+//            mShareActionProvider.setShareIntent(shareIntent);
+//        }
+//    }
 
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class DetailFragment extends Fragment {
 
-        public PlaceholderFragment() {
+        private static final String LOG_TAG = DetailFragment.class.getSimpleName();
+
+        private static final String FORECAST_SHARE_HASHTAG = " #SunshineApp";
+        private String mForecastStr;
+
+        public DetailFragment() {
+            setHasOptionsMenu(true);
         }
 
         @Override
@@ -143,11 +120,43 @@ public class DetailActivity extends ActionBarActivity {
 
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
             if(intent != null && intent.hasExtra(ForecastFragment.EXTRA_MESSAGE)) {
-                message = intent.getStringExtra(ForecastFragment.EXTRA_MESSAGE);
+                mForecastStr = intent.getStringExtra(ForecastFragment.EXTRA_MESSAGE);
                 TextView textView = (TextView) rootView.findViewById(R.id.detail_text);
-                textView.setText(message);
+                textView.setText(mForecastStr);
             }
             return rootView;
         }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            inflater.inflate(R.menu.detailfragment, menu);
+
+            // Retrieve the share menu item
+            MenuItem menuItem = menu.findItem(R.id.action_share);
+
+            // Get the provider and hold onto it to set/change the share intent.
+            ShareActionProvider mShareActionProvider =
+                    (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+            // Attach an intent to this ShareActionProvider.  You can update this at any time,
+            // like when the user selects a new piece of data they might like to share.
+            if (mShareActionProvider != null ) {
+                mShareActionProvider.setShareIntent(createShareForecastIntent());
+            } else {
+                Log.d(LOG_TAG, "Share Action Provider is null?");
+            }
+        }
+
+
+        private Intent createShareForecastIntent() {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT,
+                    mForecastStr + FORECAST_SHARE_HASHTAG);
+            return shareIntent;
+        }
+
     }
 }
