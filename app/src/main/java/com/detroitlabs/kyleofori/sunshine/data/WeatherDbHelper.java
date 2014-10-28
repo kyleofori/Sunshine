@@ -67,10 +67,15 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
                 "UNIQUE (" + WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING +
                 ") ON CONFLICT IGNORE" +
                 " );";
+
+        db.execSQL(SQL_CREATE_LOCATION_TABLE);
+        db.execSQL(SQL_CREATE_WEATHER_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("DROP TABLE IF EXISTS " + WeatherContract.LocationEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + WeatherContract.WeatherEntry.TABLE_NAME);
+        onCreate(db);
     }
 }
