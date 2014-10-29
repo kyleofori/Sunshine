@@ -1,4 +1,4 @@
-package com.detroitlabs.kyleofori.sunshine;
+package com.detroitlabs.kyleofori.test;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
