@@ -1,16 +1,8 @@
 package com.detroitlabs.kyleofori.sunshine;
 
-import android.annotation.TargetApi;
-import android.app.Application;
-import android.app.backup.SharedPreferencesBackupHelper;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -22,24 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 
 /**
  * Created by kyleofori on 10/8/14.
@@ -135,7 +112,7 @@ public class ForecastFragment extends Fragment implements FetchWeatherTask.Weath
 
     private void updateWeather() {
         FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
-        weatherTask.setOnWeatherFetched(this);
+        weatherTask.setWeatherFetchedListener(this);
         //Changing the following from weatherTask.execute("Detroit") because I want
         //the local preferences to be found.
         //When I need a context, if I'm in a Fragment, apparently I must use getActivity().

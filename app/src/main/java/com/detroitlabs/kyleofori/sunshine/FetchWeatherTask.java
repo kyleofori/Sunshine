@@ -31,14 +31,19 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName(); //needs to match name of class
     private Context mContext;
 
+    //The following interface indicates that any WeatherFetchedListener has to have a method
+    // called weatherReceived for receiving a string array called weatherData.
     public interface WeatherFetchedListener {
         public void weatherReceived(String[] weatherData);
     }
 
 
-    private WeatherFetchedListener onWeatherFetchedListener;
+    private WeatherFetchedListener mWeatherFetchedListener;
 
-
+    public void setWeatherFetchedListener (WeatherFetchedListener mWeatherFetchedListener) {
+        this.mWeatherFetchedListener = mWeatherFetchedListener;
+    }
+    
     //I'm not clear on why this constructor was overloaded. So I got rid of it!
 //    public FetchWeatherTask() {
 //        super();
@@ -58,7 +63,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
     @Override
     protected void onPostExecute(String[] strings) {
         super.onPostExecute(strings);
-        onWeatherFetchedListener.weatherReceived(strings);
+        mWeatherFetchedListener.weatherReceived(strings);
 
     }
 
@@ -288,7 +293,4 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         return gWDFJ; //onPostExecute() knows what I will return from this.
     }
 
-    public void setOnWeatherFetched(WeatherFetchedListener onWeatherFetchedListener) {
-        this.onWeatherFetchedListener = onWeatherFetchedListener;
-    }
 }
