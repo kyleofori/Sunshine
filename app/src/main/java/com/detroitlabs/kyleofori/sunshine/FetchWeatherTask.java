@@ -54,7 +54,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         super.onPreExecute();
     }
 
-    //After this AsyncTask has executed, perform mWeatherFetchedListener's method weatherReceived.
+    //I think the purpose of the WeatherFetchedListener's weatherReceived method is to get the
+    //information that's returned from doInBackground() into the onPostExecute method.
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onPostExecute(String[] strings) {
@@ -200,11 +201,11 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         // so that they can be closed in the finally block.
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
-        String[] gWDFJ = null;
+        String[] weatherDataFromJson = null;
 
 
         // Will contain the raw JSON response as a string.
-        String forecastJsonStr = null;
+        String forecastJsonStr;
 
         try {
             // Construct the URL for the OpenWeatherMap query
@@ -266,7 +267,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             }
             forecastJsonStr = buffer.toString();
 
-            gWDFJ = getWeatherDataFromJson(forecastJsonStr, 7);
+            weatherDataFromJson = getWeatherDataFromJson(forecastJsonStr, 7);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -288,7 +289,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             }
         }
 
-        return gWDFJ; //onPostExecute() knows what I will return from this.
+        return weatherDataFromJson; //onPostExecute() knows what I will return from this.
     }
 
 }
