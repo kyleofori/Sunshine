@@ -43,11 +43,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
     public void setWeatherFetchedListener (WeatherFetchedListener mWeatherFetchedListener) {
         this.mWeatherFetchedListener = mWeatherFetchedListener;
     }
-    
-    //I'm not clear on why this constructor was overloaded. So I got rid of it!
-//    public FetchWeatherTask() {
-//        super();
-//    }
 
     public FetchWeatherTask(Context context) {
         super();
@@ -59,12 +54,12 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         super.onPreExecute();
     }
 
+    //After this AsyncTask has executed, perform mWeatherFetchedListener's method weatherReceived.
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onPostExecute(String[] strings) {
         super.onPostExecute(strings);
         mWeatherFetchedListener.weatherReceived(strings);
-
     }
 
     /* The date/time conversion code is going to be moved outside the asynctask later,
@@ -141,9 +136,11 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             // KO - I'd like a check for the setting that we're on, which would multiply
             // the Celsius temperature by 1.8 and add 32 if the mode were imperial.
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+            //get the user's temperature setting
+            String temperatureSetting = prefs.getString("temperature", mContext.getString(R.string.pref_temp_label));
+            //make a boolean to find out if the user's temperature setting is on imperial
+            boolean isImperial = temperatureSetting.equals(mContext.getString(R.string.imperial));
 
-            boolean isImperial = prefs.getString("temperature",     //prefs.getString() has 2 parameters
-                    mContext.getString(R.string.pref_temp_label)).equals("Imperial");
             if (isImperial) {
                 high = convertToFahrenheit(high);
                 low = convertToFahrenheit(low);
@@ -168,6 +165,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
     }
 
 
+    //Never used this because I never tried Google Maps on a test device...
     private String getLatAndLonFromJson(String latAndLonStr)
             throws JSONException {
 
